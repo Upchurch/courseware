@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"  >
+	<mx:Style>
+		.text
+		{
+			fontSize:12;
+		}
+	</mx:Style>
+	<mx:states>
+		<mx:State name="flipCard">
+			<mx:AddChild relativeTo="{submit}" position="before">
+				<mx:HBox id="card" width="400" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5" borderStyle="solid" borderThickness="1" cornerRadius="4" height="300">
+					<mx:VBox id="user_box" width="100%" height="100%">
+						<mx:Text text="Enter Your Answer Here:" id="instruction_text" styleName="text"/>
+						<mx:TextArea width="100%" height="100%" id="user_text" styleName="text"/>
+					</mx:VBox>
+				</mx:HBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="fillBlank">
+			<mx:RemoveChild target="{response}"/>
+			<mx:RemoveChild target="{response_box}"/>
+			<mx:RemoveChild target="{submit}"/>
+			<mx:SetProperty name="width" value="600"/>
+			<mx:AddChild position="lastChild">
+				<mx:VBox width="600" id="choice_box">
+					<mx:Canvas id="choice_header">
+						<mx:Grid minHeight="20" minWidth="350" id="choice_grid" backgroundColor="#000000" borderStyle="solid" borderThickness="2" color="#CCCCCC" x="13" y="13" cornerRadius="10">
+							
+						</mx:Grid>
+						<mx:Box borderThickness="2" borderStyle="solid" cornerRadius="5" height="15" paddingTop="0" paddingBottom="0" paddingLeft="0" paddingRight="0" backgroundColor="#CCCCCC" x="24" y="7">
+							<mx:Label text="Fill in the blank with the letter for the correct words below" fontWeight="bold" fontFamily="Arial" height="20" paddingTop="-3" paddingRight="0" paddingLeft="5" x="30" y="10"/>
+						</mx:Box>
+						<mx:Image source="@Embed(source='img/top_icon.png')"/>
+					</mx:Canvas>
+				</mx:VBox>
+			</mx:AddChild>
+			<mx:SetStyle name="paddingLeft" value="10"/>
+			<mx:SetStyle name="paddingBottom" value="10"/>
+			<mx:SetStyle name="paddingRight" value="10"/>
+			<mx:SetProperty name="height" value="300"/>
+			<mx:AddChild position="lastChild">
+				<mx:HBox id="button_box">
+					<mx:Button label="Check Answer" click="onSubmit()"/>
+					<mx:Button label="Clear Answer" click="onClear()"/>
+					<mx:Button label="View Answer" click="onView()"/>
+				</mx:HBox>
+			</mx:AddChild>
+			<mx:AddChild relativeTo="{button_box}" position="before">
+				<mx:HBox horizontalAlign="left" verticalAlign="middle">
+					<mx:Image id="icon_img"/>
+					<mx:TextInput width="20" maxChars="1" fontWeight="bold" borderStyle="solid" borderThickness="1" borderColor="#000000"/>
+					<mx:Text text="Text"/>
+				</mx:HBox>
+			</mx:AddChild>
+		</mx:State>
+	</mx:states>
+	<mx:paddingBottom>10</mx:paddingBottom>
+	<mx:paddingLeft>20</mx:paddingLeft>
+	<mx:paddingRight>10</mx:paddingRight>
+	<mx:paddingTop>10</mx:paddingTop>
+	<mx:RadioButtonGroup id="choice" />
+	<mx:Button id="submit" label="Check Answer" click="onSubmit()" />
+	<mx:HBox id="response_box">
+		<mx:Text id="response" styleName="text"/>
+	</mx:HBox>
+	<mx:Script>
+		<![CDATA[
+			[Embed(source="course/img/thumbs_up.png")]
+			private var thumbsUp:Class;
+			[Embed(source="course/img/thumbs_down.png")]
+			private var thumbsDown:Class;
+					
+			import mx.controls.VRule;
+			import mx.controls.Text;
+			import mx.containers.HBox;
+			import mx.controls.SWFLoader;
+			import mx.controls.Image;
+			import mx.controls.CheckBox;
+			import mx.containers.Grid;
+			import mx.controls.RadioButton;
+			import mx.containers.GridItem;
+			import mx.containers.GridRow;
+			import mx.controls.Label;
+			import flash.events.MouseEvent;
+			private var i:int;
+			private var _question:String;
+			private var _type:String;
+			private var _choices:Array;
+			private var _answer:Array;
+			private var _replyCorrect:String;
+			private var _replyIncorrect:String;
+			private var _checkBoxTracker:Array;
+			private var _icon:Image = new Image();
+			public var _width:Number = new Number( 675 );
+			
+			public function set type( value:String ):void
+			{
+				_type = value;
+			}
+			public function set question( value:String ):void
+			{
+				var question_text:Text = new Text();
+				question_text.text = value;
+				question_text.width = _width;
+				question_text.styleName = "text";
+				question_text.setStyle( "fontWeight", "bold" );
+				this.addChild( question_text );
+			}
+			public function set choices( value:Array ):void
+			{
+				_choices = value;
+			}
+			public function set answer( value:Array ):void
+			{
+				trace( "answer: " + value.toString() );
+				_answer = value;
+			}
+			public function set replyCorrect( value:String ):void
+			{
+				_replyCorrect = value;
+			}
+			public function set replyIncorrect( value:String ):void
+			{
+				_replyIncorrect = value;
+			}
+			private function onSubmit():void
+			{
+				if( _type == "singleanswer" || _type == "pictureanswer" || _type == "truefalse" )
+				{
+					if( _answer.toString().toLowerCase() == choice.selectedValue )
+					{
+						addResponse( _replyCorrect, "green", thumbsUp );
+					} 
+					else 
+					{
+						addResponse( _replyIncorrect, "red", thumbsDown );
+					}
+				}
+				else if ( _type == "multipleanswer" )
+				{
+					trace( _answer.sort().toString() + " vs " + _checkBoxTracker.sort().toString() );
+					if ( _answer.sort().toString() == _checkBoxTracker.sort().toString() )
+					{
+						addResponse( _replyCorrect, "green", thumbsUp );
+					} 
+					else 
+					{
+						addResponse( _replyIncorrect, "red", thumbsDown );
+					}
+				}
+				else if ( _type == "flipcard" )
+				{
+					// reconfigure the "card" to show both the user and expert answers
+					if ( user_box.percentWidth > 50 )
+					{
+						instruction_text.text = "Your answer:";
+						user_box.percentWidth = 50;
+						user_text.editable = false;
+						var rule:VRule = new VRule();
+						rule.percentHeight = 100;
+						card.addChild( rule );
+						var expert_box:VBox = new VBox();
+						expert_box.percentWidth = 50;
+						expert_box.percentHeight = 100;
+						card.addChild( expert_box );
+						var expert_label:Text = new Text();
+						expert_label.text = "Expert answer:";
+						expert_label.styleName = "text";
+						expert_box.addChild( expert_label );
+						var expert_text:TextArea = new TextArea();
+						expert_text.percentHeight = 100;
+						expert_text.percentWidth = 100;
+						expert_text.styleName = "text";
+						expert_text.text = _answer.toString();
+						expert_text.editable = false;
+						expert_box.addChild( expert_text );
+					}
+				}
+			}
+			private function addResponse( reply:String, color:String, icon:Class ):void
+			{
+				response.text = reply;
+				response.width = _width;
+				response.setStyle( "color", color );
+				response.setStyle( "fontWeight", "bold" );
+				_icon.source = icon;
+				response_box.addChildAt( _icon, 0 );
+			}
+			private function onClear():void
+			{
+				//
+			}
+			private function onView():void
+			{
+				//
+			}
+			/* 
+			The following functions add the necessary question elements based on the 
+			question type.  It should only be called after the other parameters have
+			been set. 
+			*/
+			public function construct():void
+			{
+				switch( _type.toLowerCase() )
+				{
+					case "truefalse":
+						buildTrueFalse();
+						break;
+					case "singleanswer":
+						buildSingleAnswer();
+						break;
+					case "pictureanswer":
+						buildPictureAnswer();
+						break;
+					case "multipleanswer":
+						buildMultipleAnswer();
+						break;
+					case "flipcard":
+						buildFlipCard();
+						break;
+				}
+			}
+			private function buildTrueFalse():void
+			{
+				var grid:Grid = new Grid();
+				grid.verticalScrollPolicy = "auto";
+				this.addChild( grid );
+				grid.addChild( addRadioRow( "True" ) );
+				grid.addChild( addRadioRow( "False" ) );
+				
+			}
+			private function buildSingleAnswer():void
+			{
+				var grid:Grid = new Grid();
+				this.addChild( grid );
+				for( i = 0; i < _choices.length; i++ )
+				{
+					grid.addChild( addRadioRow( _choices[i] ) );
+				}
+			}
+			private function buildPictureAnswer():void
+			{
+				var grid:Grid = new Grid();
+				grid.width = _width;
+				grid.percentHeight = 100;
+				grid.setStyle( "paddingBottom", 15 );
+				grid.verticalScrollPolicy = "off";
+				this.addChild( grid );
+				var row:GridRow = new GridRow();
+				grid.addChild( row );
+				for( i = 0; i < _choices.length; i++ )
+				{
+					var item:GridItem = new GridItem()
+					item.addChild( addRadioButton( _choices[i] ) );
+					item.addChild( addChoice( _choices[i] ) );
+					row.addChild( item );
+				}
+			}
+			private function buildMultipleAnswer():void
+			{
+				_checkBoxTracker = new Array();
+				var grid:Grid = new Grid();
+				this.addChild( grid );
+				for( i = 0; i < _choices.length; i++ )
+				{
+					grid.addChild( addCheckColumn( _choices[i] ) );
+				}
+			}
+			private function buildFlipCard():void
+			{
+				this.currentState = "flipCard";
+			}
+			private function addRadioRow( value:String ):DisplayObject
+			{
+				var row:GridRow = new GridRow();
+				row.addChild( addRadioButton( value ) );
+				row.addChild( addChoice( value ) );
+				return row;
+			}
+			private function addRadioButton( value:String ):DisplayObject
+			{
+				var buttonItem:GridItem = new GridItem();
+				buttonItem.setStyle( "verticalAlign", "middle" );
+				var button:RadioButton = new RadioButton();
+				button.value = value.toLowerCase();
+				button.group = choice;
+				buttonItem.addChild( button );
+				return buttonItem;
+			}
+			private function addChoice( value:String ):DisplayObject
+			{
+				var choiceItem:GridItem = new GridItem();
+				choiceItem.addChild( createChoiceDisplay( value ) );
+				return choiceItem;
+			}
+			private function addPictureButton( value:String ):DisplayObject
+			{
+				var button:PictureButton = new PictureButton( value );
+				return button;
+			}
+			private function addCheckColumn( value:String ):DisplayObject
+			{
+				var buttonItem:GridItem = new GridItem();
+				buttonItem.setStyle( "verticalAlign", "middle" );
+				var button:CheckBox = new CheckBox();
+				button.id = String( value );
+				button.addEventListener( MouseEvent.CLICK, recordCheck );
+				buttonItem.addChild( button );
+				var textItem:GridItem = new GridItem();
+				var label:Label = new Label();
+				label.styleName = "text";
+				label.text = value;
+				textItem.addChild( label );
+				var row:GridRow = new GridRow();
+				row.addChild( buttonItem );
+				row.addChild( textItem );
+				return row;
+			}
+			private function recordCheck( event:Event ):void
+			{
+				var target:Object = event.target;
+				trace( target.id + " has been clicked. Selected: " + target.selected );
+				if ( target.selected )
+				{
+					if ( _checkBoxTracker.indexOf( target.id ) < 0 ) 
+					{
+						_checkBoxTracker.push( target.id );
+					}
+				}
+				else
+				{
+					_checkBoxTracker.splice( _checkBoxTracker.indexOf( target.id ), _checkBoxTracker.indexOf( target.id ) );
+				}
+				trace( _checkBoxTracker.toString() );
+			}
+			private function createChoiceDisplay( value:String ):DisplayObject
+			{
+				if ( value.indexOf( ".jpg" ) > 0 || value.indexOf( ".gif" ) > 0 )
+				{
+					var image:Image = new Image();
+					image.load( value );
+					return image;
+				}
+				else if ( value.indexOf( ".swf" ) > 0 )
+				{
+					var swf:SWFLoader = new SWFLoader();
+					swf.load( value );
+					return swf;
+				}
+				else 
+				{
+					var label:Text = new Text();
+					label.styleName = "text";
+					label.text = value;
+					label.width = _width;
+					return label;
+				}
+			}
+		]]>
+	</mx:Script>
+</mx:VBox>
+
