@@ -1,0 +1,15 @@
+<courses>
+	<!--
+		This xml file defines the contents of a course. It breaks courses into 
+		chapters and pages. The file attribute points to a flash file (.swf).
+		The soundfile attribute points to a voice over file that can go played
+		on the page. 
+		In this example, it is pointing to the directory this file is in, but 
+		it an be directed to other directories with absolute path values.
+	-->
+
+	<item label="Installation" file="Installation/installation.xml"/>
+	<item label="Traveler" file="travler/travler.xml"/>
+	<item label="Traveler Install" file="travlerinstall/travlerinstall.xml"/>
+	<item label="Traveler Operation" file="Operation/travlerops.xml"/>
+</courses>

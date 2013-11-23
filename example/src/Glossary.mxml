@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- mxml/Glossary.mxml -->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:MyComp="*" width="465" height="270" creationComplete="onCreation()" >
+	<mx:Style>
+		.letter
+		{
+			color: white;
+			fontWeight: bold;
+			fontFamily: Arial;
+			paddingBottom: 0;
+			paddingLeft: 0;
+			paddingRight: 0;
+			paddingTop: 0;
+			fillColors: #0082B7, #0082B7;
+			fillAlphas: 1.0, 1.0, 1.0, 1.0;
+			width: 14;
+			borderColor: #0082B7;
+			themeColor: #0082B7;
+			cornerRadious: 0;
+		}
+	</mx:Style>
+	<mx:VBox width="100%" height="100%" borderStyle="solid" borderColor="#0082B7" borderThickness="3" horizontalAlign="center" paddingBottom="10" >
+		<mx:HBox width="100%" id="header" paddingTop="2" paddingLeft="2" paddingRight="2" paddingBottom="-4">
+			<mx:Label text="GLOSSARY" id="title" fontWeight="bold" fontFamily="Arial" fontSize="14" color="#0082B7"/>
+			<mx:Box  width="100%"/>
+			<mx:Button id="close_btn" label="X" styleName="letter" width="21" height="21" click="closeClick()" fillAlphas="[1.0, 1.0, 1.0, 1.0]" fontSize="12"/>
+		</mx:HBox>
+		<mx:HBox width="100%" id="letterBar" horizontalAlign="center" horizontalGap="1" backgroundColor="#0082B7" fontSize="12" verticalAlign="middle">
+			<mx:Button click="select('A')" label="A" styleName="letter" width="14" />
+			<mx:Button click="select('B')" label="B" styleName="letter" width="14" />
+			<mx:Button click="select('C')" label="C" styleName="letter" width="14" />
+			<mx:Button click="select('D')" label="D" styleName="letter" width="14" />
+			<mx:Button click="select('E')" label="E" styleName="letter" width="14" />
+			<mx:Button click="select('F')" label="F" styleName="letter" width="14" />
+			<mx:Button click="select('G')" label="G" styleName="letter" width="14" />
+			<mx:Button click="select('H')" label="H" styleName="letter" width="14" />
+			<mx:Button click="select('I')" label="I" styleName="letter" width="14" />
+			<mx:Button click="select('J')" label="J" styleName="letter" width="14" />
+			<mx:Button click="select('K')" label="K" styleName="letter" width="14" />
+			<mx:Button click="select('L')" label="L" styleName="letter" width="14" />
+			<mx:Button click="select('M')" label="M" styleName="letter" width="14" />
+			<mx:Button click="select('N')" label="N" styleName="letter" width="14" />
+			<mx:Button click="select('O')" label="O" styleName="letter" width="14" />
+			<mx:Button click="select('P')" label="P" styleName="letter" width="14" />
+			<mx:Button click="select('Q')" label="Q" styleName="letter" width="14" />
+			<mx:Button click="select('R')" label="R" styleName="letter" width="14" />
+			<mx:Button click="select('S')" label="S" styleName="letter" width="14" />
+			<mx:Button click="select('T')" label="T" styleName="letter" width="14" />
+			<mx:Button click="select('U')" label="U" styleName="letter" width="14" />
+			<mx:Button click="select('V')" label="V" styleName="letter" width="14" />
+			<mx:Button click="select('W')" label="W" styleName="letter" width="16" />
+			<mx:Button click="select('X')" label="X" styleName="letter" width="14" />
+			<mx:Button click="select('Y')" label="Y" styleName="letter" width="14" />
+			<mx:Button click="select('Z')" label="Z" styleName="letter" width="14" />
+		</mx:HBox>
+		<mx:ComboBox width="90%" id="term_list" change="menuChange()" fillAlphas="[1.0, 1.0]" fillColors="[#FFFFFF, #FFFFFF]" fontFamily="Arial" fontSize="12" labelField="@label" styleName="list"  color="#000000"/>
+		<mx:TextArea width="95%" height="80%" fontFamily="Arial" fontSize="12" id="definition"/>
+	</mx:VBox>
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.collections.XMLListCollection;
+			import mx.events.ListEvent;
+			public static var CLOSE_GLOSSARY:String = new String( "close_glossary" );
+			private var term:Array = new Array();
+			private var def:Array = new Array();
+			
+			
+			private function onCreation():void
+			{
+				var loader:URLLoader = new URLLoader( new URLRequest( "http://www.somecompany.com/training2/" + "glossary.xml" ) );
+				loader.addEventListener( "complete", handleComplete );
+				term_list.addEventListener( ListEvent.ITEM_CLICK, menuChange );
+				term_list.setStyle( "color", "blue" );
+			}
+			private function menuChange():void
+			{
+				trace( term_list.selectedItem );
+				trace( def[ term_list.selectedItem ].toString() );
+				definition.text = def[ term_list.selectedItem ];
+			}
+			private function handleComplete( event:Event ):void 
+			{
+				try 
+				{
+					trace( "Could load the glossary XML file: ");
+					var xml:XML = new XML( event.target.data );
+					parseGlossary( xml );
+				} catch ( e:TypeError) {
+					trace( "Could not load the glossary XML file: ");
+					trace( e.message );
+				}
+			}
+			private function parseGlossary( xml:XML ):void
+			{
+				for( var i:int = 0; i < xml.children().length(); i++ )
+				{
+					term.push( xml.children()[i].word );
+					def[ xml.children()[i].word ] = xml.children()[i].definition;
+				}
+				term.sort();
+			}
+			private function select( letter:String ):void
+			{
+				var xml:Array = new Array( );
+				var termList:Array = new Array();
+				for( var i:int = 0; i < term.length; i++ )
+				{
+					var thisTerm:String = term[i];
+					if( thisTerm.indexOf( letter ) == 0 ) 
+					{
+						termList.push( term[i] );
+					}
+				}
+				termList.sort();
+				for( i = 0; i < termList.length; i++ )
+				{
+					xml.push( termList[i].toString()  );
+				}
+				term_list.dataProvider = new ArrayCollection( xml );
+				definition.text = def[ term_list.selectedItem ];
+				
+			}
+			private function closeClick():void
+			{
+				dispatchEvent( new Event( CLOSE_GLOSSARY ) );
+			}
+		]]>
+	</mx:Script>
+</mx:VBox>

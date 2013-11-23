@@ -1,0 +1,90 @@
+<course title="Product Opertion">
+	<client>Some Company</client>
+	<id>install1</id>
+	<title>Our Installation Process</title>
+	<style></style>
+	<version>1.0</version>
+	<language>eng</language>
+	<copyright>Property of Some Company, copyright 2008</copyright>
+	
+	<comments>
+		<!--
+			Comments relevent to the course can be added here. They will
+			not be displayed in the course.
+		-->
+		No course comments at this time.
+	</comments>
+	
+	<glossary>
+		<!--
+			Additional glossary terms can be added here.
+		-->
+		<item term="place holder">place holder</item>
+	</glossary>
+
+
+	<!--
+		The following defines the contents of a course. It breaks courses into 
+		chapters and pages. The file attribute points to a flash file (.swf).
+		The soundfile attribute points to a voice over file that can go played
+		on the page. 
+		In this example, it is pointing to the directory this file is in, but 
+		it an be directed to other directories with absolute path values.
+	-->
+	<chapter title="Installation">
+		<page label="Intallation Tools" file="Install_tools" soundfile="vo/installation.mp3" />
+		<page label="Page 1" file="Install_01" soundfile="vo/install_01.mp3" />
+		<page label="Page 2" file="Install_02" soundfile="vo/install_02.mp3" />
+	</chapter>
+	<chapter title="Operation">
+		<page label="Page 1" file="Ops_01" soundfile="vo/op_01.mp3" />
+		<page label="Page 2" file="Ops_02" soundfile="vo/op_02.mp3" />
+
+		<!--
+			The following are review questions.
+		-->
+		<page label="Review Question 1" type="singleAnswer" random="true" >
+			<question>What type of cabinet is used to provide support for the countertop?</question>
+			<choice1>Base cabinet</choice1>
+			<choice2>Wall cabinet</choice2>
+			<choice3>Tall cabinet</choice3>
+			<correctAnswer>1</correctAnswer>
+			<rightAnswerReply>Correct!</rightAnswerReply>
+			<wrongAnswerReply>No, the correct answer is a base cabinet.</wrongAnswerReply>
+		</page>
+
+		<page label="Review Question 2" type="singleAnswer" random="true" >
+			<question>A broom cabinet is an example of this type of cabinet.</question>
+			<choice1>Tall cabinet</choice1>
+			<choice2>Wall cabinet</choice2>
+			<choice3>Base cabinet</choice3>
+			<correctAnswer>1</correctAnswer>
+			<rightAnswerReply>Correct!</rightAnswerReply>
+			<wrongAnswerReply>No, the correct answer is a tall cabinet.</wrongAnswerReply>
+		</page>
+
+		<page label="Review Question 3" type="trueFalse" >
+			<question>Wall cabinets have toekicks.</question>
+			<correctAnswer>false</correctAnswer>
+			<rightAnswerReply>Correct!</rightAnswerReply>
+			<wrongAnswerReply>No, this is a false statement.  Base cabinets have toekicks.</wrongAnswerReply>
+		</page>
+
+		<page label="Review Question 4" type="singleAnswer" random="true" >
+			<question>What is the depth of a typical wall cabinet?</question>
+			<choice1>12</choice1>
+			<choice2>13</choice2>
+			<choice3>15</choice3>
+			<choice4>11</choice4>
+			<correctAnswer>1</correctAnswer>
+			<rightAnswerReply>Correct!</rightAnswerReply>
+			<wrongAnswerReply>No, the correct answer is 12 inches.</wrongAnswerReply>
+		</page>
+
+		<page label="Review Question 5" type="flipCard" >
+			<question>What two depths are typically available for tall cabinets?</question>
+			<correctAnswer>12 and 24 inches</correctAnswer>
+		</page>
+		<page label="Select Another Course" file="../courseSelect" />
+	</chapter>
+</course>

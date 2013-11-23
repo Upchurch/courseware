@@ -1,0 +1,11 @@
+<courses>
+	<!-- 
+		This is a list of courses that are available for the user to choose from from 
+		within this course. If this file is empty or missing, the course selection 
+		option does not appear.
+	-->
+
+	<item label="Dome Satellite Products - Technical Training" file="Installation/Main.html?course=installation.xml"/>
+	<item label="Trav'ler - Sales Training & Product Information" file="travler/Main.html?course=travler.xml"/>
+	<item label="Trav'ler - Technical Training" file="Travlerinstall/Main.html?course=travlerinstall.xml"/>
+</courses>

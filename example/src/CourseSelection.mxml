@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="174" horizontalAlign="center" verticalAlign="middle" verticalGap="10" creationComplete="onCreation()">
+	<mx:List width="100%" height="100%" id="nav_list" labelField="@label" fontFamily="Arial" fontSize="12" color="black" backgroundColor="white"></mx:List>
+	<mx:Button label="Select Course" cornerRadius="11" click="submit()"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			public static var COURSE_SELECTED:String = "course_selected";
+			public var file:String;
+			public var courseLabel:String;
+			public var titles:Array = new Array();
+			private function onCreation():void
+			{
+				var loader:URLLoader = new URLLoader( new URLRequest( "courses.xml" ) );
+				loader.addEventListener( "complete", handleComplete );
+			}
+			private function handleComplete( event:Event ):void 
+			{
+				try 
+				{
+					trace( "Could load the courses XML file: ");
+					var xml:XMLList = new XMLList( event.target.data );
+					parseCourseList( xml );
+				} catch ( e:TypeError) {
+					trace( "Could not load the courses XML file: ");
+					trace( e.message );
+				}
+			}
+			private function parseCourseList( xml:XMLList ):void
+			{
+				nav_list.dataProvider = xml.children() ;
+				for( var i:int = 0; i < xml.children().length(); i++ )
+				{
+					titles.push( xml.item[i].@label );
+				}
+			}
+			private function submit():void
+			{
+				file = nav_list.selectedItem.@file;
+				courseLabel = nav_list.selectedItem.@label;
+				dispatchEvent( new Event( COURSE_SELECTED ) );
+				
+			}
+		]]>
+	</mx:Script>
+</mx:VBox>

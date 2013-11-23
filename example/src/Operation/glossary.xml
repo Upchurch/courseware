@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+	<!--
+		This is glossary information shown in this course. It is added to the glossary information provided
+		in the glossary.xml one directory level up. This file will overwrite any definition of a word found
+		in both files.
+	-->
+
+<glossary>
+	<term>
+		<word>Z</word>
+		<definition>No entry at this time.</definition>
+	</term>
+	
+	<term>
+		<word>Amplifier</word>
+		<definition>Boosts the strength of an electrical signal.</definition>
+	</term>
+	<term>
+		<word>AM (Amplitude Modulation)</word>
+		<definition>A method of impressing a signal on a radio carrier wave by varying its amplitude (different than frequency modulation)</definition>
+	</term>
+	
+	<term>
+		<word>Antenna</word>
+		<definition>Transmits and receives radio signals. Depending on use and frequency, antennas can be a single piece of wire, dipole, a grid such as a yagi array, horn, helix, parabolic-shaped dish, or a combination of types.</definition>
+	</term>
+	
+	<term>
+		<word>Azimuth</word>
+		<definition>The angle of rotation (horizontal) that a dish antenna must be rotated through to point to a specific satellite in orbit. The angle is a north to south line through the antenna&#8217;s location, measured in degrees clockwise.</definition>
+	</term>
+	
+	<term>
+		<word>Bandwidth</word>
+		<definition>Measure of frequency use or capacity. Voice transmission by telephone requires a bandwidth of about 3000 cycles per second (3KHz). Conventional TV channel occupies a bandwidth of 6 million cycles per second (6 MHz) in ground system. Satellite based systems use a larger bandwidth of 17.5 to 72 MHz to spread or &#8220;dither&#8221; the signal to prevent interference.</definition>
+	</term>
+	
+	<term>
+		<word>Beam width</word>
+		<definition>Angle or conical shape of the beam the antenna projects. Large antennas have narrower beam widths and can pinpoint satellites more precisely in space or dense traffic areas on earth. Tighter beam widths deliver higher levels of power and better performance.</definition>
+	</term>
+	
+	<term>
+		<word>Broadband</word>
+		<definition>Network capable of delivering high bandwidth. Broadband networks were used by cable television, ranging from 550MHz to 1GHz. A single TV channel requires 6MHz. In digital satellite, bandwidth is measured in bits-per-second (BPS).</definition>
+	</term>
+	
+	<term>
+		<word>Coaxial Cable</word>
+		<definition>Cable with an outer jacket, inner braid, foil, polyethylene core and copper center conductor. Used to connect TV or FM antennas with TV or FM receivers as well as in satellite TV reception.</definition>
+	</term>
+	
+	<term>
+		<word>Decibel (dB)</word>
+		<definition>A unit used to express the intensity of a sound wave, equal to 20 times the common logarithm of the ratio of the pressure produced by the sound wave to a reference pressure, usually .0002 microbar or 1 microbar.</definition>
+	</term>
+	
+	<term>
+		<word>DBS</word>
+		<definition>Direct Broadcast Satellites, in the 12 GHz band range and beyond. Provides direct-to-home transmission.</definition>
+	</term>
+	
+	<term>
+		<word>Digital</word>
+		<definition>Conversion of information into bits of data for transmission through wire, fiber optic cable, satellite, or over-air techniques.</definition>
+	</term>
+	
+	<term>
+		<word>Dish</word>
+		<definition>Commonly used term for satellite antenna.</definition>
+	</term>
+	
+	<term>
+		<word>Downlink</word>
+		<definition>Signal sent from communications satellite to Earth station--your satellite dish.</definition>
+	</term>
+	
+	<term>
+		<word>Elevation</word>
+		<definition>The upward tilt of a satellite antenna measured in degrees required to aim the antenna at the satellite.</definition>
+	</term>
+	
+	<term>
+		<word>Feed (Feed horn)</word>
+		<definition>The part of the antenna which collects the signal reflected from the dish surface and &#8220;feeds&#8221; it into the LNBF.</definition>
+	</term>
+	
+	<term>
+		<word>FM (Frequency Modulation)</word>
+		<definition>Method of impressing a signal on a radio carrier wave by varying its frequency (different than amplitude modulation).</definition>
+	</term>
+	
+	<term>
+		<word>Footprint</word>
+		<definition>Geographic area covered by satellite signal. Usually the signal is strongest at the center of the footprint and grows progressively weaker toward the edges.</definition>
+	</term>
+	
+	<term>
+		<word>Gain</word>
+		<definition>Measure of amplification expressed in dB.</definition>
+	</term>
+	
+	<term>
+		<word>Geosynchronous or Geostationary orbit</word>
+		<definition>The satellite arc or path (the Clarke Belt) in which domestic satellites are parked 22,237 miles above the equator. Satellites travel faster than the earth which makes them appear to be stationary.</definition>
+	</term>
+	
+	<term>
+		<word>GPS</word>
+		<definition>Global Positioning Satellite. GPS systems use a group of satellites to triangulate exact position.</definition>
+	</term>
+	
+	<term>
+		<word>H</word>
+		<definition>No entry at this time.</definition>
+	</term>
+	
+	<term>
+		<word>Impedance</word>
+		<definition>The opposition a circuit offers to the alternating flow of current. It includes resistance and reactance and is measured in ohms.</definition>
+	</term>
+	
+	<term>
+		<word>J</word>
+		<definition>No entry at this time.</definition>
+	</term>
+	
+	<term>
+		<word>K</word>
+		<definition>No entry at this time.</definition>
+	</term>
+	
+	<term>
+		<word>LNB (Low Noise Block Down converter)</word>
+		<definition>A combination Low Noise Amplifier and down converter built into one device attached to the feed. (A block converter simultaneously converts the entire frequencies of one polarity received by the dish to a lower frequency.)</definition>
+	</term>
+	
+	<term>
+		<word>LNBF</word>
+		<definition>Integrated feed and LNB.</definition>
+	</term>
+	
+	<term>
+		<word>Megahertz (MHz)</word>
+		<definition>Standard abbreviation for millions of cycles per second.</definition>
+	</term>
+	
+	<term>
+		<word>Multiplath Reception</word>
+		<definition>Reception of FM or TV signals from different directions of different lengths due to obstructions, reflecting object, etc. Causes &#8220;ghosting&#8221; on TV and distorted FM audio.</definition>
+	</term>
+	
+	<term>
+		<word>Modulator</word>
+		<definition>A device which modulates a carrier; found as components in broadcasting transmitters and satellite transponders. Modulators are also used by CATV companies to place a base band video television signal onto a desired VHF or UHF channel. Home VCRs have built-in modulators allowing recorded video played back using television receiver turned to VHF channel 3 or 4.</definition>
+	</term>
+	
+	<term>
+		<word>Noise</word>
+		<definition>Extraneous signal in a system causing interference (hum, hiss, rumble) and sound distortion.</definition>
+	</term>
+	
+	<term>
+		<word>Noise Figure (NF)</word>
+		<definition>Measures the thermal noise contribution of LNAs and receiver front ends.</definition>
+	</term>
+	
+	<term>
+		<word>O</word>
+		<definition>No entry at this time.</definition>
+	</term>
+	
+	<term>
+		<word>Parabolic Dish</word>
+		<definition>Most frequently found satellite TV antenna, named for the shape of the dish described mathematically as a parabola. The parabolic shape focuses the weak microwave signal hitting the surface of the dish into a single focal point in front of the dish where the feed horn is usually located.</definition>
+	</term>
+	
+	<term>
+		<word>Programmer</word>
+		<definition>Originator of television programs transmitted via satellite.</definition>
+	</term>
+	
+	<term>
+		<word>Q</word>
+		<definition>No entry at this time.</definition>
+	</term>
+	
+	<term>
+		<word>Receiver</word>
+		<definition>A &#8220;signal tuner,&#8221; receiving information from the LNB and converting it to a frequency which is displayed on your television screen; also allows you to tune to different TV channels.</definition>
+	</term>
+	
+	<term>
+		<word>RF (Radio Frequency)</word>
+		<definition>Frequency of AM, 535-1605 KHz; FM, 88-108 MHz; TV, 54-806 MHz.</definition>
+	</term>
+	
+	<term>
+		<word>Satellite</word>
+		<definition>Electronic communications relay station orbiting 22,237 miles above the equator, moving in a fixed orbit at the same speed and direction as Earth. Satellites relay audio/video signal to receivers where information is unscrambled and converted.</definition>
+	</term>
+	
+	<term>
+		<word>Selectivity</word>
+		<definition>Ability of receiver to reject tranmissions from frequencies other than the specific one to which it is tuned.</definition>
+	</term>
+	
+	<term>
+		<word>Signal-to-Noise Ratio</word>
+		<definition>Ratio of desired signal to unwanted noise. A high signal-to-noise ratio is highly desired. Difference of 45 dB is required for clear reception.</definition>
+	</term>
+	
+	<term>
+		<word>True North</word>
+		<definition>Geographical north, determined by the earth&#8217;s axis. True north is one of the measurements used to align satellite antennas with the satellites. Magnetic north is determined by the earth's magnetic poles.</definition>
+	</term>
+	
+	<term>
+		<word>Tuner</word>
+		<definition>A device used in receivers or as a separate unit; receives radio signals and converts them into usable signals.</definition>
+	</term>
+	
+	<term>
+		<word>TVRO</word>
+		<definition>An industry term meaning Television Receive Only. Describes antennas designed to receive satellite signals.</definition>
+	</term>
+	
+	<term>
+		<word>Uplink</word>
+		<definition>An uplink facility receives information from a program provider (HBO, TNT, CNN, etc.), then a large uplink dish concentrates and transmits these outgoing signals to the satellite.</definition>
+	</term>
+	
+	<term>
+		<word>V</word>
+		<definition>No entry at this time.</definition>
+	</term>
+	
+	<term>
+		<word>W</word>
+		<definition>No entry at this time.</definition>
+	</term>
+	
+	<term>
+		<word>X</word>
+		<definition>No entry at this time.</definition>
+	</term>
+	
+	<term>
+		<word>Y</word>
+		<definition>No entry at this time.</definition>
+	</term>
+	
+</glossary>
+	
+	

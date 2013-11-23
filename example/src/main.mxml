@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="766" height="520" backgroundColor="#FFFFFF" backgroundGradientColors="#FFFFFF" creationComplete="onComplete()" xmlns:local="*" currentState="courseSelect">
+	<mx:states>
+		<mx:State name="glossary">
+			<mx:RemoveChild target="{content}"/>
+			<mx:AddChild relativeTo="{header_box}" position="after" creationPolicy="all">
+				<mx:VBox width="100%" height="100%" id="glossary_box" horizontalAlign="center" verticalAlign="middle">
+					<local:Glossary id="glossary" />
+				</mx:VBox>
+			</mx:AddChild>
+		</mx:State>
+		<mx:State name="courseSelect" >
+			<mx:RemoveChild target="{content}" />
+			<mx:AddChild relativeTo="{header_box}" position="after" creationPolicy="all">
+				<mx:VBox id="courseSelect_box" width="100%" height="100%" horizontalAlign="center" verticalAlign="middle">
+					<local:CourseSelection id="courseSelect" />
+				</mx:VBox>
+			</mx:AddChild>
+			<mx:RemoveChild target="{hbox1}"/>
+			<mx:RemoveChild target="{hbox2}"/>
+		</mx:State>
+	</mx:states>
+	<!-- primary #0082b7, secondary #CB4F9 -->
+	<mx:Style>
+		List
+		{
+			backgroundColor: #0082b7;
+			fontFamily: Arial;
+			fontSize: 12;
+		}
+		.controlButton
+		{
+			fontFamily: Arial;
+			fontWeight: bold;
+			cornerRadius: 0;
+			fillAlphas: 1.0, 1.0;
+			fillColors: #0082B7, #0082B7;
+			color: #FFFFFF;
+		}
+		.menuList
+		{
+			fontFamily: Arial;
+			fontWeight: bold;
+			color: white;
+		}
+	</mx:Style>
+	<mx:VBox x="0" y="0" width="100%" height="100%" themeColor="#00082B" verticalGap="1">
+		<mx:VBox width="100%" id="header_box" horizontalAlign="right" verticalGap="-3">
+			<mx:Image id="banner" source="banner_sized.jpg"/>
+			<mx:HBox  borderStyle="solid" borderColor="#0082B7" borderThickness="3"  paddingLeft="2" paddingRight="2" paddingBottom="2" horizontalAlign="left" horizontalGap="2" id="hbox2">
+				<mx:Button label="CHAPTER" id="chapter_btn" styleName="controlButton" height="15" click="onChapterClick()" />
+				<mx:Button label="GLOSSARY" id="glossary_btn" styleName="controlButton" height="15" click="onGlossaryClick( event )"/>
+				<mx:Button label="SOUND ON" id="audio_btn" styleName="controlButton" height="15" toggle="true" click="onAudioClick( event )" width="85"/>
+				<mx:Button label="EXIT" id="exit_btn" styleName="controlButton" height="15" click="onExitClick()"/>
+			</mx:HBox>
+		</mx:VBox>
+		<mx:Box id="content" width="100%" height="100%" horizontalAlign="center" verticalAlign="middle" />
+		<mx:VBox id="footer_box" width="100%" verticalGap="-1">
+			<mx:HBox  borderStyle="solid" borderColor="#0082B7" borderThickness="3"  paddingLeft="2" paddingRight="2" paddingTop="2" horizontalAlign="left" horizontalGap="2" id="hbox1">
+				<mx:Button label="&lt; BACK" id="back_btn" styleName="controlButton" height="15" click="getBack()"/>
+				<mx:Box borderColor="#0082b7" borderStyle="solid" borderThickness="1" height="15"  width="200" >
+					<mx:Text id="page_text" color="#0082b7"/>
+				</mx:Box>
+				<mx:Button label="NEXT &gt;" id="next_btn" styleName="controlButton" height="15" click="getNext()"/>
+			</mx:HBox>
+			<mx:Box borderStyle="solid" borderColor="#0082b7" borderThickness="2" width="100%"  height="0"/>
+			<mx:Box horizontalAlign="right" width="100%" paddingTop="1">
+				<mx:Text text="© 2006 Winegard Co. All Rights Reserved" color="#0082b7"  fontFamily="Arial"/>
+			</mx:Box>
+		</mx:VBox>
+	</mx:VBox>
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Menu;
+			import mx.events.MenuEvent;
+			import mx.controls.SWFLoader;
+			import flash.media.Sound;
+			import flash.media.SoundChannel;
+			import Glossary;
+			private var _scrollTimer:Timer = new Timer( 20 );
+			private var _courseDirectory:String;
+			private var _courseFile:String;
+			private var _courseTitle:String;
+			private var _chapters:Array;
+			private var _pages:Array;
+			private var _chapNum:int;
+			private var _pageNum:int;
+			private var _menuData:XML;
+			private var _sound:Sound;
+			private var _soundChannel:SoundChannel;
+
+			private function onComplete():void
+			{
+				_scrollTimer.addEventListener( TimerEvent.TIMER, updatePageTitle );
+				_scrollTimer.start();
+				glossary.addEventListener( Glossary.CLOSE_GLOSSARY, onGlossaryClick );
+				courseSelect.addEventListener( CourseSelection.COURSE_SELECTED, onCourseSelected );
+			}
+			
+			private function onCourseSelected( event:Event ):void
+			{
+				currentState = "";
+				var fileData:Array = event.target.file.split("/");
+				var _courseFile:String = event.target.file;
+				if( fileData.length > 1 )
+				{
+					_courseDirectory = fileData[0];
+				}
+				else
+				{
+					_courseDirectory = "";
+				}
+				var loader:URLLoader = new URLLoader( new URLRequest( _courseFile ) );
+				loader.addEventListener( "complete", handleComplete );
+				_courseTitle = courseSelect.courseLabel;
+			}
+			private function handleComplete( event:Event ):void 
+			{
+				try 
+				{
+					trace( "Could load the course XML file: ");
+					var xml:XMLList = new XMLList( event.target.data );
+					parseCourse( xml );
+				} catch ( e:TypeError) {
+					trace( "Could not load the course XML file: ");
+					trace( e.message );
+				}
+			}
+			private function parseCourse( xml:XMLList ):void
+			{
+				data = new XML( <items /> );
+				_chapters = new Array();
+				_pages = new Array();
+				for( var i:int = 0; i < xml.chapter.length(); i++ )
+				{
+					data.appendChild( <item /> );
+					data.item[i].@title = xml.chapter[i].@title;
+					_chapters.push( xml.chapter[i].@title );
+					_pages.push( new Array() );
+					var xmlList:XMLList = xml.chapter[i].page; 
+					for( var j:int = 0; j < xmlList.length(); j++ )
+					{
+						_pages[i].push( xmlList[j].@file );
+					}
+				}
+				_menuData = new XML( data );
+				getPage( 0, 0 );
+			}
+			private function getNext():void
+			{
+				if( _pageNum < _pages[_chapNum].length - 1 )
+				{
+					_pageNum++;
+				}
+				else
+				{
+					_chapNum++;
+					_pageNum = 0;
+				}
+				getPage( _chapNum, _pageNum );
+			}
+			private function getBack():void
+			{
+				if( _pageNum > 0 )
+				{
+					_pageNum--;
+				}
+				else
+				{
+					_chapNum--;
+					_pageNum = _pages[_chapNum].length - 1;
+				}
+				getPage( _chapNum, _pageNum );
+			}
+			private function getPage( chap:int, page:int ):void
+			{
+				_chapNum = chap;
+				_pageNum = page;
+				var file:String = _pages[chap][page];
+				file = file.toLowerCase();
+				if( file.indexOf( "courseselect" ) > -1 )
+				{
+					if( _soundChannel != null )
+					{
+						_soundChannel.stop();
+					}
+					var courseselect:CourseSelection = new CourseSelection();
+					courseselect.addEventListener( CourseSelection.COURSE_SELECTED, onCourseSelected );
+					content.removeAllChildren();
+					content.addChild( courseselect );
+				}
+				else
+				{
+					var swf:SWFLoader = new SWFLoader();
+					swf.load( _courseDirectory + "/" + _pages[chap][page] + ".swf" );
+					_sound = new Sound( new URLRequest( _courseDirectory + "/vo/" + _pages[chap][page] + ".mp3" ) );
+					_sound.addEventListener( Event.COMPLETE, onAudioClick );
+					content.removeAllChildren();
+					content.addChild( swf );
+				}
+				page_text.text = _courseTitle;
+				page_text.text += " - Page " + int( page + 1 );
+				page_text.text += " of " + _pages[chap].length;
+				if( chap == 0 && page == 0 )
+				{
+					next_btn.enabled = true;
+					back_btn.enabled = false;
+				}
+				else if( chap == _chapters.length - 1 && page == _pages[chap].length - 1 )
+				{
+					next_btn.enabled = false;
+					back_btn.enabled = true;
+				}
+				else
+				{
+					next_btn.enabled = true;
+					back_btn.enabled = true;
+				}
+				if( _soundChannel != null )
+				{
+					_soundChannel.stop();
+				}
+			}
+			private function updatePageTitle( event:Event ):void
+			{
+				if( page_text.x > -page_text.width )
+				{
+					page_text.move( page_text.x - 1, page_text.y );
+				} 
+				else 
+				{
+					page_text.move( 200, page_text.y );
+				}
+			}
+			private function onChapterClick():void
+			{
+				var menu:Menu = Menu.createMenu( null, _menuData, false );
+				menu.labelField = "@title";
+				menu.styleName = "menuList";
+				menu.addEventListener( MenuEvent.ITEM_CLICK, onMenuClick );
+				menu.show( 470, 70 );
+			}
+			private function onMenuClick( event:Event ):void
+			{
+				trace( "menu choice: " + event.target.selectedIndex );
+				getPage( event.target.selectedIndex, 0 );
+			}
+			private function onGlossaryClick( event:Event ):void
+			{
+				if( _soundChannel != null )
+				{
+					_soundChannel.stop();
+				}
+				if( currentState == "" )
+				{
+					trace( "Now in Glossary state" );
+					currentState = "glossary";
+				}
+				else
+				{
+					trace( "Now in Base state" );
+					currentState = "";
+				}
+			}
+			private function onAudioClick( event:Event ):void
+			{
+				if( audio_btn.selected ) 
+				{
+					audio_btn.label = "AUDIO OFF";
+					if( _soundChannel != null )
+					{
+						_soundChannel.stop();
+					}
+				}
+				else
+				{
+					audio_btn.label = "AUDIO ON";
+					_soundChannel = _sound.play();
+				}
+			}
+			private function onExitClick():void
+			{
+				if (_soundChannel != null )
+				{
+					_soundChannel.stop();
+				}
+				currentState='courseSelect';
+			}
+		]]>
+	</mx:Script>
+</mx:Application>
